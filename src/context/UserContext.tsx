@@ -16,8 +16,13 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<UserProfile | null>(() => {
-        const saved = localStorage.getItem('red_thread_user');
-        return saved ? JSON.parse(saved) : null;
+        try {
+            const saved = localStorage.getItem('red_thread_user');
+            return saved ? JSON.parse(saved) : null;
+        } catch (e) {
+            console.error("Failed to parse user from localStorage", e);
+            return null;
+        }
     });
 
     const login = (name: string, gender: string) => {
