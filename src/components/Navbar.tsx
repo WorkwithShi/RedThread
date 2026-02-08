@@ -18,9 +18,9 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <NavLink to="/" className="nav-brand font-outfit tracking-[-0.05em] uppercase font-black" onClick={closeMenu}>
+            <NavLink to="/" className="nav-brand font-outfit tracking-[0.05em] uppercase font-bold text-lg" onClick={closeMenu}>
                 <span className="text-[var(--color-red)]">Red</span>
-                <span className="opacity-20 ml-0.5">Thread</span>
+                <span className="opacity-60 ml-1">Thread</span>
             </NavLink>
 
             <button className="mobile-toggle p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all" onClick={toggleMenu}>
