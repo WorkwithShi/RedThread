@@ -88,15 +88,19 @@ const Confess = () => {
             .single();
 
         if (error) {
-            console.error("Wishlist fetch error:", error);
+            console.log("Wishlist fetch note:", error.message);
+            // It's okay if it doesn't exist, we just show emptiness later
+            setTargetWishlist([]);
+            return;
         }
 
-        if (!error && data) {
-            console.log("Wishlist found:", data.items.length, "items");
-            setTargetWishlist(data.items);
+        if (data) {
+            console.log("Wishlist found:", data.items?.length || 0, "items");
+            setTargetWishlist(data.items || []);
             setTargetOwnerName(data.user_name);
-        } else if (!data) {
+        } else {
             console.log("No wishlist found for this user.");
+            setTargetWishlist([]);
         }
     };
 
