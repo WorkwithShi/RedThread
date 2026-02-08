@@ -107,8 +107,6 @@ h6 {
 }
 
 .nav-brand {
-    font-family: var(--font-heading);
-    font-size: 2rem;
     color: var(--color-red);
     text-decoration: none;
     z-index: 1002;
@@ -156,13 +154,15 @@ body {
         top: 0;
         right: 0;
         bottom: 0;
-        width: 70%;
+        width: 85%;
         background-color: rgba(255, 251, 240, 0.98);
         /* High opacity cream */
         border-left: 2px solid var(--color-red-light);
         flex-direction: column;
         justify-content: center;
-        padding: 2rem;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 4rem 2rem;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         transition: transform 0.3s ease-in-out;

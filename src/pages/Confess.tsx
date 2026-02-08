@@ -107,11 +107,20 @@ const Confess = () => {
         e.preventDefault();
         if (!targetRecipientId) return;
         setLoading(true);
-        const { error } = await supabase.from('confessions').insert([{ content: newMessage, sender_name: senderName, sender_gender: senderGender, recipient_id: targetRecipientId }]);
+        const { error } = await supabase.from('confessions').insert([{
+            content: newMessage,
+            sender_name: senderName,
+            sender_gender: senderGender,
+            recipient_id: targetRecipientId
+        }]);
         setLoading(false);
         if (error) {
             console.error("Confession insert error:", error);
-            alert(`Failed to send: ${error.message}`);
+            if (error.message.includes('keys missing')) {
+                alert("Supabase keys are missing in Vercel settings. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your project environment variables.");
+            } else {
+                alert(`Failed to send: ${error.message}. Please check if the database table is set up correctly.`);
+            }
         }
         else { setGeneratedLink('SENT'); setNewMessage(""); }
     };
