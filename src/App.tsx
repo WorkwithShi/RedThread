@@ -7,6 +7,7 @@ import Wishlist from './pages/Wishlist';
 import DirectConfession from './pages/DirectConfession';
 import Compatibility from './pages/Compatibility';
 import Policy from './pages/Policy';
+import About from './pages/About';
 import RedThread from './components/RedThread';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="love-note" element={<DirectConfession />} />
           <Route path="compatibility" element={<Compatibility />} />
           <Route path="policy" element={<Policy />} />
+          <Route path="about" element={<About />} />
         </Route>
       </Routes>
     </Router>
