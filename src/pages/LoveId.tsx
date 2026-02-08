@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useUser } from '../context/UserContext';
 import Button from '../components/Button';
-import { Heart, Star, Moon, Sun, Cloud, Music, Coffee, Book } from 'lucide-react';
+import { Heart, Star, Moon, Sun, Cloud, Music, Coffee, Book, Download } from 'lucide-react';
+import { toPng } from 'html-to-image';
+import download from 'downloadjs';
 import '../styles/animations.css';
 
 interface Option {
@@ -140,8 +142,22 @@ const getChineseNickname = (name: string) => {
 
 const LoveId = () => {
     const { user } = useUser();
+    const cardRef = useRef<HTMLDivElement>(null);
     const [step, setStep] = useState(0); // 0: Start, 1-N: Questions, N+1: Result
     const [answers, setAnswers] = useState<string[]>([]);
+    const [downloading, setDownloading] = useState(false);
+
+    const downloadCard = async () => {
+        if (!cardRef.current) return;
+        setDownloading(true);
+        try {
+            const dataUrl = await toPng(cardRef.current, { quality: 0.95, backgroundColor: '#FFFBF0' });
+            download(dataUrl, `love-card-${user?.name}-${Date.now()}.png`);
+        } catch (e) {
+            console.error(e);
+        }
+        setDownloading(false);
+    };
 
     if (!user) {
         return (
@@ -225,7 +241,7 @@ const LoveId = () => {
         <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8 animate-fade-in p-4">
             <h1 className="text-5xl font-heading text-[var(--color-red)]">Your Love Card</h1>
 
-            <div className="relative bg-[#FFFBF0] p-8 md:p-12 rounded-[var(--radius-xl)] shadow-[var(--shadow-card)] border-4 border-[var(--color-red)] max-w-md w-full text-center overflow-hidden">
+            <div ref={cardRef} className="relative bg-[#FFFBF0] p-8 md:p-12 rounded-[var(--radius-xl)] shadow-[var(--shadow-card)] border-4 border-[var(--color-red)] max-w-md w-full text-center overflow-hidden">
                 {/* Decorative corner stamps */}
                 <div className="absolute top-0 left-0 w-16 h-16 border-r border-b border-[var(--color-red)] rounded-br-[var(--radius-lg)]" />
                 <div className="absolute bottom-0 right-0 w-16 h-16 border-l border-t border-[var(--color-red)] rounded-tl-[var(--radius-lg)]" />
@@ -257,7 +273,9 @@ const LoveId = () => {
             </div>
 
             <div className="flex gap-4">
-                <Button onClick={() => window.print()}>Save Card</Button>
+                <Button onClick={downloadCard} disabled={downloading}>
+                    {downloading ? "Saving..." : "Save Card"} <Download size={20} className="ml-2" />
+                </Button>
                 <Button variant="outline" onClick={() => { setStep(0); setAnswers([]); }}>Retake Quiz</Button>
             </div>
         </div>

@@ -109,7 +109,10 @@ const Confess = () => {
         setLoading(true);
         const { error } = await supabase.from('confessions').insert([{ content: newMessage, sender_name: senderName, sender_gender: senderGender, recipient_id: targetRecipientId }]);
         setLoading(false);
-        if (error) alert("Failed to send.");
+        if (error) {
+            console.error("Confession insert error:", error);
+            alert(`Failed to send: ${error.message}`);
+        }
         else { setGeneratedLink('SENT'); setNewMessage(""); }
     };
 

@@ -11,11 +11,12 @@ const Compatibility = () => {
     const [score, setScore] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const certificateRef = useRef<HTMLDivElement>(null);
+    const storyRef = useRef<HTMLDivElement>(null);
+    const [downloading, setDownloading] = useState(false);
 
     const calculateCompatibility = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Simple deterministic hash for "real" feeling results
         const combined = (name1 + name2).toLowerCase().replace(/\s/g, '');
         let hash = 0;
         for (let i = 0; i < combined.length; i++) {
@@ -29,18 +30,63 @@ const Compatibility = () => {
         }, 1500);
     };
 
-    const downloadCertificate = async () => {
-        if (!certificateRef.current) return;
-        setLoading(true);
+    const downloadCertificate = async (ref: React.RefObject<HTMLDivElement | null>, isStory: boolean) => {
+        if (!ref.current) return;
+        setDownloading(true);
         try {
-            const dataUrl = await toPng(certificateRef.current, { quality: 0.95, backgroundColor: '#fff5f5' });
-            download(dataUrl, `compatibility-certificate-${Date.now()}.png`);
+            const dataUrl = await toPng(ref.current, {
+                quality: 1,
+                backgroundColor: '#fff5f5',
+                pixelRatio: 2
+            });
+            download(dataUrl, `destiny-${isStory ? 'story' : 'scroll'}-${Date.now()}.png`);
         } catch (e) { console.error(e); }
-        setLoading(false);
+        setDownloading(false);
     };
 
     return (
         <div className="flex flex-col items-center min-h-[80vh] gap-8 animate-fade-in p-4 max-w-4xl mx-auto w-full">
+            {/* Hidden Story Version (9:16) */}
+            <div className="fixed -left-[2000px] top-0 pointer-events-none">
+                <div ref={storyRef} className="w-[1080px] h-[1920px] bg-[var(--color-cream)] p-20 flex flex-col items-center justify-between text-center border-[20px] border-double border-[var(--color-red)] relative overflow-hidden">
+                    {/* Background Heart */}
+                    <Heart size={800} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] text-[var(--color-red)] pointer-events-none" />
+
+                    <div className="space-y-12 relative z-10 w-full pt-20">
+                        <div className="flex flex-col items-center gap-6">
+                            <Heart fill="#D32F2F" size={120} className="text-[#D32F2F]" />
+                            <h1 className="text-8xl font-outfit font-black tracking-[-0.05em] uppercase text-[#D32F2F]">Red Thread</h1>
+                            <div className="w-64 h-1 bg-[#D32F2F] opacity-20" />
+                        </div>
+
+                        <div className="space-y-8 mt-24">
+                            <h2 className="text-5xl font-heading text-[#D32F2F] uppercase tracking-[8px]">Certificate of Destiny</h2>
+                            <p className="text-4xl italic font-serif text-gray-700" style={{ fontFamily: "'Prata', serif" }}>This certifies the threads of</p>
+                            <h3 className="text-9xl font-bold text-gray-900 leading-tight px-10" style={{ fontFamily: "'Prata', serif" }}>{name1} <br /> & <br /> {name2}</h3>
+                            <p className="text-4xl italic font-serif text-gray-700" style={{ fontFamily: "'Prata', serif" }}>are woven with a compatibility of</p>
+                        </div>
+
+                        <div className="text-[220px] font-bold text-[#D32F2F] leading-none drop-shadow-md py-12" style={{ fontFamily: "'Cinzel Decorative', cursive" }}>{score || 0}%</div>
+                    </div>
+
+                    <div className="w-full space-y-10 mb-20 relative z-10">
+                        <div className="text-4xl italic text-gray-600 px-20 leading-loose" style={{ fontFamily: "'Prata', serif" }}>
+                            "Your lives are {(score ?? 0) > 50 ? "intertwined by fate's golden needle, destined to weave a story of eternal grace." : "a beautiful puzzle, where every tangle is a lesson and every knot is a bond yet to be discovered."}"
+                        </div>
+
+                        <div className="flex justify-between items-end px-12 pt-12 border-t border-[#D32F2F]/20">
+                            <div className="text-left opacity-60">
+                                <p className="text-xl uppercase tracking-widest mb-2 font-heading text-[#D32F2F]">Expressions • UIT</p>
+                                <p className="text-2xl font-mono text-gray-500">{new Date().toLocaleDateString()}</p>
+                            </div>
+                            <div className="w-32 h-32 border-4 border-[#D32F2F] flex items-center justify-center text-[#D32F2F] font-bold text-6xl rounded-sm rotate-[-12deg] bg-red-500/5 relative overflow-hidden">
+                                <span className="relative z-10">縁</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="text-center mb-6">
                 <h1 className="text-5xl font-heading text-[var(--color-red)] mb-2">Destiny Match</h1>
                 <p className="text-[var(--color-text)] opacity-70">
@@ -91,11 +137,11 @@ const Compatibility = () => {
                 <div className="w-full max-w-2xl animate-fade-in flex flex-col gap-8">
                     <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-lg text-center border-2 border-[var(--color-red-light)] max-w-md mx-auto w-full">
                         <h2 className="text-xl font-bold mb-1 text-[var(--color-text)]">Compatibility Score</h2>
-                        <div className="text-5xl font-heading text-[var(--color-red)] mb-1">{score}%</div>
+                        <div className="text-5xl font-heading text-[var(--color-red)] mb-1">{score || 0}%</div>
                         <div className="w-full bg-gray-200 rounded-full h-3 mb-3 overflow-hidden">
                             <div
                                 className="bg-[var(--color-red)] h-full transition-all duration-1000 ease-out"
-                                style={{ width: `${score}%` }}
+                                style={{ width: `${score || 0}%` }}
                             />
                         </div>
                         <p className="italic opacity-80 text-sm">
@@ -132,7 +178,7 @@ const Compatibility = () => {
                                     <span>{score > 85 ? "Eternal Twin Flames" : score > 70 ? "Sacred Connection" : score > 40 ? "Kindred Spirits" : "A Lesson in Growth"}</span>
                                 </div>
                                 <div className="text-center italic text-gray-600 px-2 leading-relaxed" style={{ fontFamily: "'Prata', serif" }}>
-                                    "Your threads are {score > 50 ? "woven with golden silk and destiny's grace." : "tangled in a way that only time and care can unravel."}"
+                                    "Your threads are {(score || 0) > 50 ? "woven with golden silk and destiny's grace." : "tangled in a way that only time and care can unravel."}"
                                 </div>
                             </div>
 
@@ -158,9 +204,14 @@ const Compatibility = () => {
                         </div>
                     </div>
 
-                    <Button onClick={downloadCertificate} variant="outline" className="w-full max-w-md mx-auto flex items-center justify-center gap-2" disabled={loading}>
-                        {loading ? <Loader2 className="animate-spin" /> : "Download Scroll"} <Download size={18} />
-                    </Button>
+                    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">
+                        <Button onClick={() => downloadCertificate(certificateRef, false)} variant="outline" className="flex-1 flex items-center justify-center gap-2" disabled={downloading}>
+                            {downloading ? <Loader2 className="animate-spin" /> : "Download Scroll"} <Download size={18} />
+                        </Button>
+                        <Button onClick={() => downloadCertificate(storyRef, true)} variant="primary" className="flex-1 flex items-center justify-center gap-2 btn-glow" disabled={downloading}>
+                            {downloading ? <Loader2 className="animate-spin" /> : "Instagram Story"} <Sparkles size={18} />
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>
