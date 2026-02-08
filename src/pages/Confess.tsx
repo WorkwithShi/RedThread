@@ -199,7 +199,12 @@ const Confess = () => {
             <div className="text-center mb-4">
                 <h1 className="text-5xl font-heading text-[var(--color-red)] mb-2">Red Thread Whispers</h1>
                 <p className="text-[var(--color-text)] opacity-70">
-                    {receivedSecret ? "A whisper has reached you through the thread of fate." : (myInboxId && activeTab === 'inbox' ? `Inbox for ${b64toutf8(myInboxId)}` : "Anonymously woven by fate.")}
+                    {receivedSecret ? "A whisper has reached you through the thread of fate." : (myInboxId && activeTab === 'inbox' ? (
+                        <span className="flex items-center justify-center gap-2">
+                            Inbox for {b64toutf8(myInboxId)}
+                            <span className={`w-3 h-3 rounded-full ${myUserGender === 'Female' ? 'bg-pink-500' : myUserGender === 'Male' ? 'bg-blue-500' : 'bg-gray-400'} animate-pulse shadow-sm`} />
+                        </span>
+                    ) : "Anonymously woven by fate.")}
                 </p>
             </div>
 
@@ -289,10 +294,10 @@ const Confess = () => {
                     </div>
                 ) : (
                     <div className="w-full max-w-lg text-center py-16 bg-white/50 rounded-[var(--radius-xl)] border-2 border-dashed border-[var(--color-pink)] p-8">
-                        <MessageCircle className="mx-auto mb-4 text-[var(--color-pink)]" size={48} />
+                        <MessageCircle className="mx-auto mb-4 text-[var(--color-pink)] opacity-40" size={48} />
                         <h3 className="text-2xl font-bold mb-4">Claim Your Box</h3>
-                        <p className="opacity-70 mb-8">Create an inbox to receive secrets from your friends.</p>
-                        <Button onClick={() => setIsNameModalOpen(true)} size="lg">Ready</Button>
+                        <p className="opacity-70 mb-8">Create an inbox to receive secrets from your friends, and choose your theme!</p>
+                        <Button onClick={() => setIsNameModalOpen(true)} size="lg" className="btn-glow">Claim Now</Button>
                     </div>
                 )
             ) : (
