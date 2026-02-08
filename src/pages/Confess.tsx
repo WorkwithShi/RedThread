@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { AlertCircle, MessageCircle, Copy, Check, Loader2, Download, Heart, Trash2 } from 'lucide-react';
+import { AlertCircle, MessageCircle, Copy, Check, Loader2, Download, Heart, Trash2, Gift, ExternalLink } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import '../styles/animations.css';
@@ -51,6 +51,8 @@ const Confess = () => {
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
     const [receivedSecret, setReceivedSecret] = useState<any>(null);
+    const [targetWishlist, setTargetWishlist] = useState<any[]>([]);
+    const [targetOwnerName, setTargetOwnerName] = useState('');
 
     // Core IDs
     const [myInboxId, setMyInboxId] = useState<string | null>(localStorage.getItem('red_thread_recipient_id'));
@@ -68,12 +70,35 @@ const Confess = () => {
             setTargetRecipientId(toParam);
             setActiveTab('write');
             try { setRecipientName(b64toutf8(toParam)); } catch { setRecipientName(toParam); }
+            fetchTargetWishlist(toParam);
         } else if (secretParam) {
             handleIncomingSecret(secretParam);
         } else {
             setTargetRecipientId(null);
+            setTargetWishlist([]);
         }
     }, [searchParams]);
+
+    const fetchTargetWishlist = async (id: string) => {
+        console.log("Fetching wishlist for recipient:", id);
+        const { data, error } = await supabase
+            .from('wishlists')
+            .select('*')
+            .eq('recipient_id', id)
+            .single();
+
+        if (error) {
+            console.error("Wishlist fetch error:", error);
+        }
+
+        if (!error && data) {
+            console.log("Wishlist found:", data.items.length, "items");
+            setTargetWishlist(data.items);
+            setTargetOwnerName(data.user_name);
+        } else if (!data) {
+            console.log("No wishlist found for this user.");
+        }
+    };
 
     useEffect(() => {
         if (!myInboxId || activeTab !== 'inbox') return;
@@ -327,6 +352,56 @@ const Confess = () => {
                                 {targetRecipientId ? (loading ? "..." : "Send") : "Generate Card"}
                             </Button>
                         </form>
+                    )}
+
+                    {/* Unified Wishlist Display */}
+                    {targetRecipientId && !generatedLink && (
+                        <div className="mt-12 animate-fade-in w-full">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="h-[2px] flex-1 bg-gradient-to-r from-transparent to-[var(--color-pink)]" />
+                                <h3 className="text-2xl font-heading text-[var(--color-red)] whitespace-nowrap flex items-center gap-2">
+                                    <Gift className="animate-bounce-subtle" /> {targetOwnerName || recipientName}'s Wishlist
+                                </h3>
+                                <div className="h-[2px] flex-1 bg-gradient-to-l from-transparent to-[var(--color-pink)]" />
+                            </div>
+
+                            {targetWishlist.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {targetWishlist.map((wish: any) => (
+                                        <div key={wish.id} className="bg-white/90 p-4 rounded-2xl shadow-sm border border-[var(--color-pink)]/30 flex items-center gap-4 hover:shadow-md transition-shadow group">
+                                            <div className="w-16 h-16 rounded-xl bg-[var(--color-cream)] flex-shrink-0 flex items-center justify-center overflow-hidden">
+                                                {wish.image ? (
+                                                    <img src={wish.image} alt="" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <Gift className="text-[var(--color-pink)] opacity-50" size={24} />
+                                                )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="font-bold text-sm truncate">{wish.name}</h4>
+                                                <p className="text-xs text-[var(--color-red)] font-bold">{wish.price || 'Gift'}</p>
+                                            </div>
+                                            {wish.link && (
+                                                <a
+                                                    href={wish.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="p-2 rounded-full bg-[var(--color-red-light)]/20 text-[var(--color-red)] hover:bg-[var(--color-red)] hover:text-white transition-all shadow-sm"
+                                                >
+                                                    <ExternalLink size={16} />
+                                                </a>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-8 bg-white/40 rounded-2xl border border-dashed border-[var(--color-pink)]/30">
+                                    <Gift className="mx-auto mb-2 text-[var(--color-pink)] opacity-40 animate-pulse" size={32} />
+                                    <p className="text-sm opacity-60">No wishes found for {recipientName} yet...</p>
+                                    <p className="text-[10px] opacity-40 italic mt-2">"True wishes are often kept in the heart."</p>
+                                </div>
+                            )}
+                            <p className="text-[10px] text-center opacity-40 mt-6 italic">"A small token of love can bridge the greatest distances."</p>
+                        </div>
                     )}
                 </div>
             )}
