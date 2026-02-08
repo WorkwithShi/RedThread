@@ -8,6 +8,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Ensure the client doesn't crash on initialization even with empty strings
-export const supabase = (supabaseUrl && supabaseAnonKey)
+export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('mock.supabase.co'));
+
+export const supabase = isSupabaseConfigured
     ? createClient(supabaseUrl, supabaseAnonKey)
-    : createClient('https://mock.supabase.co', 'mock-key'); // Dummy fallback
+    : createClient('https://dummy.supabase.co', 'mock-key'); // Dummy fallback

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
-import { MessageCircle, Copy, Check, Loader2, Download, Heart, Trash2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { AlertCircle, MessageCircle, Copy, Check, Loader2, Download, Heart, Trash2 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import '../styles/animations.css';
@@ -169,6 +169,16 @@ const Confess = () => {
                     {receivedSecret ? "A whisper has reached you through the thread of fate." : (myInboxId && activeTab === 'inbox' ? `Inbox for ${b64toutf8(myInboxId)}` : "Anonymously woven by fate.")}
                 </p>
             </div>
+
+            {!isSupabaseConfigured && (
+                <div className="w-full max-w-lg bg-orange-50 border-2 border-orange-200 p-4 rounded-xl flex items-center gap-4 text-orange-800 animate-pulse">
+                    <AlertCircle size={24} />
+                    <div className="text-sm">
+                        <p className="font-bold">Supabase Not Connected</p>
+                        <p className="opacity-80">Check your Vercel Environment Variables. The app is running in offline/demo mode.</p>
+                    </div>
+                </div>
+            )}
 
             {!receivedSecret && (
                 <div className="flex gap-4 mb-2">
