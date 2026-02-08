@@ -161,12 +161,13 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2.5rem;
-        padding: 4rem 2rem;
+        gap: 1.5rem;
+        padding: 6rem 2rem;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         transition: transform 0.3s ease-in-out;
         z-index: 1001;
+        overflow-y: auto;
     }
 
     .nav-links.open {

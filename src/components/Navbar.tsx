@@ -48,6 +48,10 @@ const Navbar = () => {
                     <Heart className="nav-icon" size={24} fill="currentColor" />
                     <span>Match</span>
                 </NavLink>
+                <a href="#footer" className="nav-link icon-heartbeat" onClick={closeMenu}>
+                    <Heart className="nav-icon" size={24} />
+                    <span>Club</span>
+                </a>
 
                 <div className="flex items-center gap-4 ml-4">
                     <AudioPlayer />

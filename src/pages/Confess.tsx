@@ -264,8 +264,10 @@ const Confess = () => {
                         {loading ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[var(--color-red)]" size={48} /></div> : (
                             <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2">
                                 {messages.length === 0 ? (
-                                    <div className="col-span-full text-center py-12 bg-white/50 rounded-[var(--radius-xl)] border border-dashed border-[var(--color-red-light)]">
+                                    <div className="flex flex-col items-center justify-center py-20 opacity-50">
+                                        <MessageCircle className={`mb-4 ${myUserGender === 'Female' ? 'text-pink-400' : myUserGender === 'Male' ? 'text-blue-400' : 'text-[var(--color-pink)]'}`} size={48} />
                                         <p className="opacity-60 text-lg">Your inbox is quiet...</p>
+                                        <p className="text-xs italic mt-2">"True words are often whispered in silence."</p>
                                     </div>
                                 ) : messages.map((msg) => (
                                     <div key={msg.id} className="bg-white/80 p-6 rounded-[var(--radius-lg)] shadow-sm border-l-4 border-[var(--color-red)] relative animate-fade-in group hover:shadow-md transition-shadow">
@@ -280,11 +282,6 @@ const Confess = () => {
                                                 <Heart size={10} fill="currentColor" />
                                             </div>
                                             <span className="text-xs font-bold text-[var(--color-red)]">From: {msg.sender_name}</span>
-                                            {msg.sender_gender !== 'Secret' && (
-                                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-tighter ${msg.sender_gender === 'Male' ? 'bg-blue-50 text-blue-500' : 'bg-pink-50 text-pink-500'}`}>
-                                                    {msg.sender_gender}
-                                                </span>
-                                            )}
                                         </div>
                                         <p className="text-xl font-serif italic">"{msg.content}"</p>
                                     </div>
@@ -357,7 +354,6 @@ const Confess = () => {
                                     value={targetName}
                                     onChange={e => setTargetName(e.target.value)}
                                     placeholder="To: (Name or Nickname)"
-                                    className="p-3 rounded-lg border border-[var(--color-pink)] bg-white/50 font-heading text-center"
                                 />
                             )}
                             <div className="flex gap-2 mb-2 justify-center">
@@ -407,7 +403,8 @@ const Confess = () => {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h4 className="font-bold text-sm truncate group-hover:text-[var(--color-red)] transition-colors">{wish.name}</h4>
-                                                <p className="text-xs text-[var(--color-red)] font-bold">{wish.price || 'Gift'}</p>
+                                                <p className="text-[10px] opacity-70 italic line-clamp-1">{wish.note}</p>
+                                                <p className="text-xs text-[var(--color-red)] font-bold mt-0.5">{wish.price || 'Gift'}</p>
                                             </div>
                                             {wish.link ? (
                                                 <div className="p-2 rounded-full bg-[var(--color-red)] text-white shadow-sm transform translate-x-12 group-hover:translate-x-0 transition-transform">
@@ -433,40 +430,58 @@ const Confess = () => {
             )}
 
             {/* Modal for Claiming Inbox */}
-            <Modal isOpen={isNameModalOpen} onClose={() => setIsNameModalOpen(false)} title="My Inbox">
+            <Modal isOpen={isNameModalOpen} onClose={() => setIsNameModalOpen(false)} title="My Inbox Link">
                 <div className="flex flex-col gap-6">
-                    <p className="text-sm opacity-70">Enter a name and select your gender to claim your inbox.</p>
-
-                    <div className="space-y-4">
-                        <div>
-                            <label className="text-xs font-bold uppercase tracking-widest opacity-40 ml-1">My Secret Name</label>
-                            <input
-                                type="text"
-                                value={tempName}
-                                onChange={(e) => setTempName(e.target.value)}
-                                placeholder="Nickname"
-                                className="w-full p-4 rounded-xl border-2 border-[var(--color-pink)] focus:border-[var(--color-red)] outline-none text-xl text-center"
-                                autoFocus
-                            />
-                        </div>
-
-                        <div>
-                            <label className="text-xs font-bold uppercase tracking-widest opacity-40 ml-1">My Gender</label>
-                            <select
-                                id="gender-select"
-                                className="w-full p-4 rounded-xl border-2 border-[var(--color-pink)] bg-white text-lg appearance-none text-center cursor-pointer hover:border-[var(--color-red)] transition-colors"
-                                defaultValue="Secret"
+                    {myInboxId ? (
+                        <div className="text-center space-y-4">
+                            <p className="text-sm opacity-70">You already have a box claimed as <span className="font-bold text-[var(--color-red)]">{b64toutf8(myInboxId)}</span>.</p>
+                            <div className="bg-white/80 p-4 rounded-xl border border-[var(--color-pink)] text-xs font-mono break-all shadow-inner">
+                                {window.location.origin}/confessions?to={myInboxId}
+                            </div>
+                            <Button onClick={() => {
+                                navigator.clipboard.writeText(`${window.location.origin}/confessions?to=${myInboxId}`);
+                                alert("Link copied!");
+                            }} className="w-full">Copy Link</Button>
+                            <button
+                                onClick={() => { localStorage.removeItem('red_thread_recipient_id'); window.location.reload(); }}
+                                className="text-[10px] opacity-40 hover:opacity-100 uppercase tracking-widest mt-4"
                             >
-                                <option value="Secret">Keep it Secret 🎭</option>
-                                <option value="Female">Damsel (Woman) 🌸</option>
-                                <option value="Male">Gentleman (Man) 👔</option>
-                            </select>
+                                Reset & Create New (Careful!)
+                            </button>
                         </div>
-                    </div>
-
-                    <Button onClick={handleSaveInboxName} size="lg" className="w-full btn-glow mt-2">
-                        Create My Inbox
-                    </Button>
+                    ) : (
+                        <>
+                            <p className="text-sm opacity-70">Enter a name and select your gender to claim your inbox.</p>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="text-xs font-bold uppercase tracking-widest opacity-40 ml-1">My Secret Name</label>
+                                    <input
+                                        type="text"
+                                        value={tempName}
+                                        onChange={(e) => setTempName(e.target.value)}
+                                        placeholder="Nickname"
+                                        className="w-full p-4 rounded-xl border-2 border-[var(--color-pink)] focus:border-[var(--color-red)] outline-none text-xl text-center"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold uppercase tracking-widest opacity-40 ml-1">My Gender</label>
+                                    <select
+                                        id="gender-select"
+                                        className="w-full p-4 rounded-xl border-2 border-[var(--color-pink)] bg-white text-lg appearance-none text-center cursor-pointer hover:border-[var(--color-red)] transition-colors"
+                                        defaultValue="Secret"
+                                    >
+                                        <option value="Secret">Keep it Secret 🎭</option>
+                                        <option value="Female">Damsel (Woman) 🌸</option>
+                                        <option value="Male">Gentleman (Man) 👔</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <Button onClick={handleSaveInboxName} size="lg" className="w-full btn-glow mt-2">
+                                Create My Inbox
+                            </Button>
+                        </>
+                    )}
                 </div>
             </Modal>
         </div>
