@@ -269,7 +269,10 @@ const Confess = () => {
                         <form onSubmit={targetRecipientId ? handleSendToInbox : handleGenerateShareableCard} className="bg-white/80 p-8 rounded-[var(--radius-xl)] shadow-xl flex flex-col gap-6">
                             <div className="text-center">
                                 <h3 className="text-2xl font-heading text-[var(--color-red)]">{targetRecipientId ? `To: ${recipientName}` : "Whisper into the Void"}</h3>
-                                <p className="text-xs opacity-60">{targetRecipientId ? "Sending directly to their inbox." : "Shared as a card or link."}</p>
+                                <p className="text-xs opacity-60 mb-4">{targetRecipientId ? "Sending directly to their inbox." : "Shared as a card or link."}</p>
+                                <div className="bg-[var(--color-red-light)]/30 p-2 rounded-lg text-[10px] text-[var(--color-red)] italic mb-4 border border-[var(--color-red)]/10 animate-pulse">
+                                    "Love is kind. Please remain respectful and polite, even when whispering anonymously."
+                                </div>
                             </div>
                             <textarea
                                 value={newMessage}
