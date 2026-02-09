@@ -52,11 +52,18 @@ const Navbar = () => {
                         <span>Match</span>
                     </NavLink>
                     <NavLink to="/about" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
-                        <Info className="nav-icon" size={24} />
+                        <BookHeart className="nav-icon" size={24} />
                         <span>Club</span>
                     </NavLink>
 
                     <div className="flex items-center gap-4 ml-4">
+                        <button
+                            onClick={() => setIsGuideOpen(true)}
+                            className="p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all"
+                            aria-label="App Guide"
+                        >
+                            <Info size={20} />
+                        </button>
                         <AudioPlayer />
                     </div>
                 </div>
