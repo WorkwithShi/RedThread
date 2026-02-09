@@ -1,4 +1,3 @@
-import React from 'react';
 import { Heart, Instagram, Linkedin, Quote, Users, Sparkles } from 'lucide-react';
 import '../styles/animations.css';
 
@@ -60,6 +59,26 @@ const About = () => {
                         <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Vision</h3>
                         <p className="text-sm opacity-70 leading-relaxed">
                             To weave a global tapestry where anonymity meets intimacy, allowing true expressions to flow freely through the red thread.
+                        </p>
+                    </div>
+
+                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
+                        <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 mb-6 shadow-sm">
+                            <Sparkles size={24} />
+                        </div>
+                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Events</h3>
+                        <p className="text-sm opacity-70 leading-relaxed">
+                            From slam poetry nights to creative writing workshops, we create spaces for spirits to collide and create.
+                        </p>
+                    </div>
+
+                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-6 shadow-sm">
+                            <Quote size={24} />
+                        </div>
+                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Journal</h3>
+                        <p className="text-sm opacity-70 leading-relaxed">
+                            A curated collection of the finest expressions from our community, preserved forever in our seasonal publications.
                         </p>
                     </div>
                 </div>

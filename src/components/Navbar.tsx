@@ -21,6 +21,7 @@ const Navbar = () => {
             <NavLink to="/" className="nav-brand font-outfit tracking-[0.05em] uppercase font-bold text-lg" onClick={closeMenu}>
                 <span className="text-[var(--color-red)]">Red</span>
                 <span className="opacity-60 ml-1">Thread</span>
+                <span className="text-[8px] opacity-10 absolute -bottom-1 left-0">v2.5</span>
             </NavLink>
 
             <button className="mobile-toggle p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all" onClick={toggleMenu}>

@@ -39,8 +39,31 @@ const Compatibility = () => {
                 backgroundColor: '#fff5f5',
                 pixelRatio: 2
             });
+
+            if (isStory && navigator.share) {
+                try {
+                    const blob = await fetch(dataUrl).then(res => res.blob());
+                    const file = new File([blob], `destiny-story-${Date.now()}.png`, { type: 'image/png' });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Red Thread - Destiny Match',
+                            text: 'Check out our Destiny Match score!'
+                        });
+                        setDownloading(false);
+                        return;
+                    }
+                } catch (shareError) {
+                    console.error('Error sharing:', shareError);
+                }
+            }
+
+            // Fallback to download if sharing is not supported or fails
             download(dataUrl, `destiny-${isStory ? 'story' : 'scroll'}-${Date.now()}.png`);
-        } catch (e) { console.error(e); }
+        } catch (e) {
+            console.error(e);
+        }
         setDownloading(false);
     };
 
