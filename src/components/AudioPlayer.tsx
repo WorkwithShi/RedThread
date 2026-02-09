@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Music, Loader2, AlertCircle } from 'lucide-react';
 
 // Global audio element to prevent multiple instances
