@@ -85,7 +85,9 @@ const Compatibility = () => {
                         <div className="space-y-8 mt-24">
                             <h2 className="text-5xl font-heading text-[#D32F2F] uppercase tracking-[8px]">Certificate of Destiny</h2>
                             <p className="text-4xl italic font-serif text-gray-700" style={{ fontFamily: "'Prata', serif" }}>This certifies the threads of</p>
-                            <h3 className="text-9xl font-bold text-gray-900 leading-tight px-10" style={{ fontFamily: "'Prata', serif" }}>{name1} <br /> & <br /> {name2}</h3>
+                            <h3 className="text-8xl font-bold text-gray-900 leading-tight px-10" style={{ fontFamily: "'Prata', serif" }}>{name1}</h3>
+                            <p className="text-4xl italic font-serif text-gray-700" style={{ fontFamily: "'Prata', serif" }}>&</p>
+                            <h3 className="text-8xl font-bold text-gray-900 leading-tight px-10" style={{ fontFamily: "'Prata', serif" }}>{name2}</h3>
                             <p className="text-4xl italic font-serif text-gray-700" style={{ fontFamily: "'Prata', serif" }}>are woven with a compatibility of</p>
                         </div>
 
@@ -190,7 +192,9 @@ const Compatibility = () => {
 
                             <div className="py-6 space-y-2">
                                 <p className="text-sm italic text-gray-700 font-serif" style={{ fontFamily: "'Prata', serif" }}>This solemnly certifies that the souls of</p>
-                                <h3 className="text-3xl font-bold text-[var(--color-text)] truncate px-4" style={{ fontFamily: "'Prata', serif" }}>{name1} & {name2}</h3>
+                                <h3 className="text-2xl font-bold text-[var(--color-text)] px-4" style={{ fontFamily: "'Prata', serif" }}>{name1}</h3>
+                                <p className="text-sm italic text-gray-700 font-serif" style={{ fontFamily: "'Prata', serif" }}>&</p>
+                                <h3 className="text-2xl font-bold text-[var(--color-text)] px-4" style={{ fontFamily: "'Prata', serif" }}>{name2}</h3>
                                 <p className="text-sm italic text-gray-700 font-serif" style={{ fontFamily: "'Prata', serif" }}>hold a compatibility of</p>
                                 <div className="text-6xl font-bold text-[var(--color-red)] my-4 drop-shadow-sm" style={{ fontFamily: "'Cinzel Decorative', cursive" }}>{score}%</div>
                             </div>

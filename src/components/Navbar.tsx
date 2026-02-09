@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Heart, MessageCircle, Gift, Menu, X, Info } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
+import Modal from './Modal';
 import { playPopSound } from '../utils/audioEffects';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isGuideOpen, setIsGuideOpen] = useState(false);
 
     const toggleMenu = () => {
         playPopSound();
@@ -25,9 +27,22 @@ const Navbar = () => {
                     <span className="text-[8px] opacity-10 absolute -bottom-1 left-0">v2.5</span>
                 </NavLink>
 
-                <button className="mobile-toggle md:hidden p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all" onClick={toggleMenu}>
+                {/* Desktop hamburger menu - hidden on mobile */}
+                <button className="mobile-toggle hidden md:block p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all" onClick={toggleMenu}>
                     {isOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
+
+                {/* Mobile top bar buttons */}
+                <div className="flex items-center gap-2 md:hidden">
+                    <AudioPlayer />
+                    <button
+                        onClick={() => setIsGuideOpen(true)}
+                        className="p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all"
+                        aria-label="App Guide"
+                    >
+                        <Info size={20} />
+                    </button>
+                </div>
 
                 <div className={`nav-links ${isOpen ? 'open' : ''}`}>
                     <NavLink to="/" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
@@ -95,6 +110,36 @@ const Navbar = () => {
                     </NavLink>
                 </div>
             </div>
+
+            {/* App Guide Modal */}
+            <Modal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} title="How to Use Red Thread">
+                <div className="space-y-4 text-left">
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">🏠 Home</h3>
+                        <p className="text-sm opacity-80">Your starting point. Quick access to all features.</p>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">💌 Love Card</h3>
+                        <p className="text-sm opacity-80">Generate a personalized love card based on your personality.</p>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">🤫 Secrets</h3>
+                        <p className="text-sm opacity-80">Send and receive anonymous confessions. Create your inbox to get started!</p>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">🎁 Wishlist</h3>
+                        <p className="text-sm opacity-80">Create a wishlist of things you'd love to receive. Share it with friends!</p>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">❤️ Match</h3>
+                        <p className="text-sm opacity-80">Calculate compatibility between two people and download a certificate!</p>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[var(--color-red)] mb-2">📱 Navigation</h3>
+                        <p className="text-sm opacity-80">Use the bottom bar on mobile to quickly switch between features.</p>
+                    </div>
+                </div>
+            </Modal>
         </>
     );
 };
