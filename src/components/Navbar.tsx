@@ -1,36 +1,21 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Heart, MessageCircle, Gift, Menu, X, Info } from 'lucide-react';
+import { Home, Heart, MessageCircle, Gift, Info, BookHeart, Sparkles } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
 import Modal from './Modal';
 import { playPopSound } from '../utils/audioEffects';
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [isGuideOpen, setIsGuideOpen] = useState(false);
-
-    const toggleMenu = () => {
-        playPopSound();
-        setIsOpen(!isOpen);
-    };
-    const closeMenu = () => {
-        playPopSound();
-        setIsOpen(false);
-    };
 
     return (
         <>
             <nav className="navbar">
-                <NavLink to="/" className="nav-brand font-outfit tracking-[0.05em] uppercase font-bold text-lg" onClick={closeMenu}>
+                <NavLink to="/" className="nav-brand font-outfit tracking-[0.05em] uppercase font-bold text-lg">
                     <span className="text-[var(--color-red)]">Red</span>
                     <span className="opacity-60 ml-1">Thread</span>
                     <span className="text-[8px] opacity-10 absolute -bottom-1 left-0">v2.5</span>
                 </NavLink>
-
-                {/* Desktop hamburger menu - hidden on mobile */}
-                <button className="mobile-toggle hidden md:block p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all" onClick={toggleMenu}>
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
 
                 {/* Mobile top bar buttons */}
                 <div className="flex items-center gap-2 md:hidden">
@@ -44,28 +29,29 @@ const Navbar = () => {
                     </button>
                 </div>
 
-                <div className={`nav-links ${isOpen ? 'open' : ''}`}>
-                    <NavLink to="/" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                {/* Desktop navigation - hidden on mobile */}
+                <div className="nav-links hidden md:flex">
+                    <NavLink to="/" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <Home className="nav-icon" size={24} />
                         <span>Home</span>
                     </NavLink>
-                    <NavLink to="/love-card" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                    <NavLink to="/love-card" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <Heart className="nav-icon" size={24} />
                         <span>Love Card</span>
                     </NavLink>
-                    <NavLink to="/confessions" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                    <NavLink to="/confessions" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <MessageCircle className="nav-icon" size={24} />
                         <span>Secrets</span>
                     </NavLink>
-                    <NavLink to="/wishlist" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                    <NavLink to="/wishlist" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <Gift className="nav-icon" size={24} />
                         <span>Wishlist</span>
                     </NavLink>
-                    <NavLink to="/compatibility" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                    <NavLink to="/compatibility" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <Heart className="nav-icon" size={24} fill="currentColor" />
                         <span>Match</span>
                     </NavLink>
-                    <NavLink to="/about" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+                    <NavLink to="/about" className={({ isActive }) => `nav-link icon-heartbeat ${isActive ? 'active' : ''}`}>
                         <Info className="nav-icon" size={24} />
                         <span>Club</span>
                     </NavLink>
@@ -74,69 +60,79 @@ const Navbar = () => {
                         <AudioPlayer />
                     </div>
                 </div>
-
-                {/* Overlay for mobile */}
-                {isOpen && (
-                    <div
-                        className="fixed inset-0 bg-black/20 z-1000 md:hidden"
-                        onClick={closeMenu}
-                        style={{ zIndex: 1000 }}
-                    />
-                )}
             </nav>
 
             {/* Bottom Navigation for Mobile */}
             <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-[var(--color-pink)]/30 shadow-lg md:hidden z-[9999] safe-area-bottom">
-                <div className="flex justify-around items-center px-2 py-2">
-                    <NavLink to="/" className={({ isActive }) => `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
-                        <Home size={20} />
-                        <span className="text-[10px] font-bold">Home</span>
+                <div className="flex justify-around items-center px-1 py-2">
+                    <NavLink to="/" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <Home size={18} />
+                        <span className="text-[9px] font-bold">Home</span>
                     </NavLink>
-                    <NavLink to="/love-card" className={({ isActive }) => `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
-                        <Heart size={20} />
-                        <span className="text-[10px] font-bold">Card</span>
+                    <NavLink to="/love-card" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <Heart size={18} />
+                        <span className="text-[9px] font-bold">Card</span>
                     </NavLink>
-                    <NavLink to="/confessions" className={({ isActive }) => `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
-                        <MessageCircle size={20} />
-                        <span className="text-[10px] font-bold">Secrets</span>
+                    <NavLink to="/confessions" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <MessageCircle size={18} />
+                        <span className="text-[9px] font-bold">Secrets</span>
                     </NavLink>
-                    <NavLink to="/wishlist" className={({ isActive }) => `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
-                        <Gift size={20} />
-                        <span className="text-[10px] font-bold">Wishlist</span>
+                    <NavLink to="/wishlist" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <Gift size={18} />
+                        <span className="text-[9px] font-bold">Wishlist</span>
                     </NavLink>
-                    <NavLink to="/compatibility" className={({ isActive }) => `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
-                        <Heart size={20} fill="currentColor" />
-                        <span className="text-[10px] font-bold">Match</span>
+                    <NavLink to="/compatibility" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <Heart size={18} fill="currentColor" />
+                        <span className="text-[9px] font-bold">Match</span>
+                    </NavLink>
+                    <NavLink to="/about" className={({ isActive }) => `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'text-[var(--color-red)] bg-[var(--color-red-light)]/20' : 'text-gray-600'}`} onClick={() => playPopSound()}>
+                        <BookHeart size={18} />
+                        <span className="text-[9px] font-bold">Club</span>
                     </NavLink>
                 </div>
             </div>
 
             {/* App Guide Modal */}
             <Modal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} title="How to Use Red Thread">
-                <div className="space-y-4 text-left">
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">🏠 Home</h3>
-                        <p className="text-sm opacity-80">Your starting point. Quick access to all features.</p>
+                <div className="space-y-5 text-left">
+                    <div className="flex gap-3 items-start">
+                        <div className="p-2 bg-[var(--color-red-light)]/20 rounded-lg">
+                            <Heart className="text-[var(--color-red)]" size={20} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-bold text-[var(--color-red)] mb-1">Love Card</h3>
+                            <p className="text-sm opacity-80">Generate a personalized romantic card that reveals your love language, personality traits, and compatibility insights. Share it with friends or your crush!</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">💌 Love Card</h3>
-                        <p className="text-sm opacity-80">Generate a personalized love card based on your personality.</p>
+
+                    <div className="flex gap-3 items-start">
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                            <MessageCircle className="text-purple-600" size={20} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-bold text-[var(--color-red)] mb-1">Secret Confessions</h3>
+                            <p className="text-sm opacity-80">Send anonymous messages to anyone or create your own inbox to receive confessions. Perfect for sharing feelings without revealing your identity!</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">🤫 Secrets</h3>
-                        <p className="text-sm opacity-80">Send and receive anonymous confessions. Create your inbox to get started!</p>
+
+                    <div className="flex gap-3 items-start">
+                        <div className="p-2 bg-pink-100 rounded-lg">
+                            <Gift className="text-pink-600" size={20} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-bold text-[var(--color-red)] mb-1">Wishlist</h3>
+                            <p className="text-sm opacity-80">Create and share your wishlist of gifts, experiences, or dreams. Let friends and loved ones know what would make you smile!</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">🎁 Wishlist</h3>
-                        <p className="text-sm opacity-80">Create a wishlist of things you'd love to receive. Share it with friends!</p>
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">❤️ Match</h3>
-                        <p className="text-sm opacity-80">Calculate compatibility between two people and download a certificate!</p>
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-[var(--color-red)] mb-2">📱 Navigation</h3>
-                        <p className="text-sm opacity-80">Use the bottom bar on mobile to quickly switch between features.</p>
+
+                    <div className="flex gap-3 items-start">
+                        <div className="p-2 bg-red-100 rounded-lg">
+                            <Sparkles className="text-red-600" size={20} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-bold text-[var(--color-red)] mb-1">Destiny Match</h3>
+                            <p className="text-sm opacity-80">Calculate the compatibility between two people and get a beautiful certificate to download or share on Instagram Stories!</p>
+                        </div>
                     </div>
                 </div>
             </Modal>
