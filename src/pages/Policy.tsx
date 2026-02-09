@@ -54,8 +54,7 @@ const Policy = () => {
 
             <footer className="text-center">
                 <div className="inline-flex items-center gap-2 text-[var(--color-red)] opacity-60">
-                    <MessageCircle size={20} />
-                    <span className="font-heading text-xl">Expressions • UIT</span>
+                    <span className="font-heading text-xl">Expressions</span> • UIT
                 </div>
             </footer>
         </div>
