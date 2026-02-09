@@ -1,20 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Volume2, VolumeX, Music, Loader2, AlertCircle } from 'lucide-react';
 
+// Global audio element to prevent multiple instances
+let globalAudio: HTMLAudioElement | null = null;
+let globalListeners: Set<(isPlaying: boolean) => void> = new Set();
+
 const AudioPlayer: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     // Romantic Piano Instrumental - "Love" by Bensound (Stable royalty free)
     const trackUrl = "https://www.bensound.com/bensound-music/bensound-love.mp3";
 
-
     useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.loop = true;
-            audioRef.current.volume = 0.4;
+        // Register this component's state updater
+        globalListeners.add(setIsPlaying);
+
+        // Initialize global audio if it doesn't exist
+        if (!globalAudio) {
+            globalAudio = new Audio(trackUrl);
+            globalAudio.loop = true;
+            globalAudio.volume = 0.4;
+            globalAudio.preload = 'auto';
 
             const handleLoadStart = () => setIsLoading(true);
             const handleCanPlay = () => setIsLoading(false);
@@ -24,48 +32,51 @@ const AudioPlayer: React.FC = () => {
                 console.error("Audio failed to load.");
             };
 
-            const el = audioRef.current;
-            el.addEventListener('loadstart', handleLoadStart);
-            el.addEventListener('canplay', handleCanPlay);
-            el.addEventListener('error', handleError);
+            globalAudio.addEventListener('loadstart', handleLoadStart);
+            globalAudio.addEventListener('canplay', handleCanPlay);
+            globalAudio.addEventListener('error', handleError);
 
             // Attempt to auto-play on mount
             const attemptAutoPlay = async () => {
                 try {
-                    await el.play();
-                    setIsPlaying(true);
+                    await globalAudio!.play();
+                    globalListeners.forEach(listener => listener(true));
                 } catch (err) {
                     console.log("Auto-play blocked by browser, waiting for user interaction");
                     // Add one-time click listener to start music
                     const startOnClick = () => {
-                        el.play().then(() => setIsPlaying(true)).catch(() => { });
+                        globalAudio!.play()
+                            .then(() => globalListeners.forEach(listener => listener(true)))
+                            .catch(() => { });
                         document.removeEventListener('click', startOnClick);
                     };
                     document.addEventListener('click', startOnClick, { once: true });
                 }
             };
             attemptAutoPlay();
-
-            return () => {
-                el.removeEventListener('loadstart', handleLoadStart);
-                el.removeEventListener('canplay', handleCanPlay);
-                el.removeEventListener('error', handleError);
-            };
+        } else {
+            // Sync state with existing audio
+            setIsPlaying(!globalAudio.paused);
         }
+
+        return () => {
+            // Unregister this component's state updater
+            globalListeners.delete(setIsPlaying);
+        };
     }, [trackUrl]);
 
     const togglePlay = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-                setIsPlaying(false);
+        if (globalAudio) {
+            if (!globalAudio.paused) {
+                globalAudio.pause();
+                globalListeners.forEach(listener => listener(false));
             } else {
                 setHasError(false);
-                audioRef.current.play()
-                    .then(() => setIsPlaying(true))
+                globalAudio.play()
+                    .then(() => globalListeners.forEach(listener => listener(true)))
                     .catch((err) => {
                         console.warn("Audio play blocked", err);
-                        setIsPlaying(false);
+                        globalListeners.forEach(listener => listener(false));
                     });
             }
         }
@@ -73,8 +84,6 @@ const AudioPlayer: React.FC = () => {
 
     return (
         <div className="flex items-center gap-2 bg-white/50 px-3 py-1.5 rounded-full border border-[var(--color-pink)] shadow-sm">
-            <audio ref={audioRef} src={trackUrl} preload="auto" />
-
             <button
                 onClick={togglePlay}
                 disabled={hasError}
