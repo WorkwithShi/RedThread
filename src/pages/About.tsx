@@ -1,4 +1,4 @@
-import { Instagram, Linkedin, Quote, Users, Sparkles, BookOpen, Calendar } from 'lucide-react';
+import { Instagram, Linkedin, Quote, BookOpen, Calendar, Heart } from 'lucide-react';
 import '../styles/animations.css';
 
 const About = () => {
@@ -21,10 +21,10 @@ const About = () => {
     ];
 
     const events = [
-        { title: "Poetry Slam Night", date: "Dec 2025", color: "from-pink-400 to-red-400" },
-        { title: "Valentine's Special", date: "Feb 2026", color: "from-red-400 to-pink-500" },
-        { title: "Creative Writing Workshop", date: "Jan 2026", color: "from-purple-400 to-pink-400" },
-        { title: "Open Mic Sessions", date: "Nov 2025", color: "from-pink-500 to-red-500" }
+        { title: "UIT's Castle", image: "/assets/events/uits_castle.jpg.jpeg" },
+        { title: "Recruitment", image: "/assets/events/expressions_newspaper.jpg.png" },
+        { title: "Orientation", image: "/assets/events/orientation.jpg.png" },
+        { title: "Chase or Escape", image: "/assets/events/chase_or_escape.jpg.png" },
     ];
 
     return (
@@ -32,11 +32,13 @@ const About = () => {
             <div className="text-center mb-16 relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-[var(--color-pink)]/10 rounded-full blur-3xl -z-10" />
                 <h1 className="text-4xl md:text-6xl font-heading text-[var(--color-red)] mb-4 drop-shadow-sm">Expressions</h1>
-                <p className="text-lg tracking-[0.2em] uppercase opacity-60 font-medium">The Literary Club of UIT</p>
+                <p className="text-lg tracking-[0.2em] uppercase opacity-60 font-medium">The Literary Club of <span className="font-sans">UIT</span></p>
                 <div className="mt-6 flex justify-center gap-2">
-                    <div className="w-12 h-[2px] bg-gradient-to-r from-transparent to-[var(--color-red)]/40 rounded-full" />
-                    <Sparkles size={16} className="text-[var(--color-red)] animate-pulse" />
-                    <div className="w-12 h-[2px] bg-gradient-to-l from-transparent to-[var(--color-red)]/40 rounded-full" />
+                    <div className="w-12 h-[2px] bg-gradient-to-r from-transparent to-[var(--color-red)]/40 rounded-full self-center" />
+                    <div className="icon-heartbeat text-[var(--color-red)]">
+                        <Heart size={20} fill="#D32F2F" />
+                    </div>
+                    <div className="w-12 h-[2px] bg-gradient-to-l from-transparent to-[var(--color-red)]/40 rounded-full self-center" />
                 </div>
             </div>
 
@@ -48,12 +50,18 @@ const About = () => {
                     </div>
 
                     <div className="relative z-10">
-                        <h2 className="text-3xl md:text-4xl font-heading text-[var(--color-red)] mb-6">
+                        <h2 className="text-3xl md:text-4xl font-heading text-[var(--color-red)] mb-8">
                             Woven in Words
                         </h2>
-                        <p className="text-xl md:text-2xl font-serif font-bold italic text-gray-800 leading-relaxed mb-8">
-                            "Expressions is not just a club; it's the creative heartbeat of UIT. We believe that every soul has a story, and every story deserves a thread to bind it to the world."
-                        </p>
+
+                        <div className="bg-white/40 p-8 rounded-2xl border border-[var(--color-pink)]/20 mb-8 relative">
+                            <Quote size={24} className="text-[var(--color-red)]/20 absolute top-4 left-4 transform -scale-x-100" />
+                            <p className="text-lg md:text-xl font-serif text-gray-800 leading-loose text-center italic relative z-10 px-6">
+                                "Expressions is not just a club; it's the creative heartbeat of <span className="font-sans not-italic font-medium">UIT</span>. We believe that every soul has a story, and every story deserves a thread to bind it to the world."
+                            </p>
+                            <Quote size={24} className="text-[var(--color-red)]/20 absolute bottom-4 right-4" />
+                        </div>
+
                         <div className="space-y-4 opacity-80 leading-loose text-base">
                             <p>
                                 Founded on the belief that literature is the ultimate bridge between hearts, we provide a sanctuary for poets, storytellers, and dreamers to express the inexpressible.
@@ -127,49 +135,6 @@ const About = () => {
                     </div>
                 </section>
 
-                {/* Mission Grid */}
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
-                        <div className="w-12 h-12 rounded-2xl bg-pink-100 flex items-center justify-center text-pink-600 mb-6 shadow-sm">
-                            <Users size={24} />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Community</h3>
-                        <p className="text-sm opacity-70 leading-relaxed">
-                            A diverse family of creative minds bound by a shared passion for the written word and the magic of storytelling.
-                        </p>
-                    </div>
-
-                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
-                        <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 mb-6 shadow-sm">
-                            <Sparkles size={24} />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Events</h3>
-                        <p className="text-sm opacity-70 leading-relaxed">
-                            From slam poetry nights to creative writing workshops, we create spaces for spirits to collide and create.
-                        </p>
-                    </div>
-
-                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
-                        <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-6 shadow-sm">
-                            <Quote size={24} />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Journal</h3>
-                        <p className="text-sm opacity-70 leading-relaxed">
-                            A curated collection of the finest expressions from our community, preserved forever in our seasonal publications.
-                        </p>
-                    </div>
-
-                    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 mb-6 shadow-sm">
-                            <BookOpen size={24} />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Vision</h3>
-                        <p className="text-sm opacity-70 leading-relaxed">
-                            To weave a global tapestry where anonymity meets intimacy, allowing true expressions to flow freely through the red thread.
-                        </p>
-                    </div>
-                </div>
-
                 {/* Event Posters Section */}
                 <section className="py-8">
                     <div className="text-center mb-10">
@@ -182,24 +147,27 @@ const About = () => {
                         <p className="text-sm opacity-60">Moments that brought us together</p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {events.map((event, index) => (
                             <div
                                 key={index}
-                                className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                                className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-gray-100"
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
-                                <div className={`absolute inset-0 bg-gradient-to-br ${event.color} opacity-90 group-hover:opacity-100 transition-opacity`} />
-                                <div className="absolute inset-0 p-6 flex flex-col justify-between text-white">
-                                    <div className="text-xs font-bold uppercase tracking-wider opacity-80">{event.date}</div>
-                                    <div>
-                                        <h3 className="text-lg md:text-xl font-bold leading-tight mb-2">{event.title}</h3>
-                                        <div className="w-12 h-1 bg-white/50 rounded-full" />
-                                    </div>
+                                <img
+                                    src={event.image}
+                                    alt={event.title}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <h3 className="text-lg font-bold leading-tight text-center">{event.title}</h3>
                                 </div>
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                             </div>
                         ))}
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-lg font-heading text-[var(--color-red)] opacity-80 animate-pulse">...and many more</p>
                     </div>
                 </section>
 

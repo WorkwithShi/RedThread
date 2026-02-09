@@ -1,4 +1,4 @@
-import { Shield, Users, Heart, MessageCircle } from 'lucide-react';
+import { Shield, Users, Heart } from 'lucide-react';
 
 const Policy = () => {
     return (
@@ -54,7 +54,7 @@ const Policy = () => {
 
             <footer className="text-center">
                 <div className="inline-flex items-center gap-2 text-[var(--color-red)] opacity-60">
-                    <span className="font-heading text-xl">Expressions</span> • UIT
+                    <p><span className="font-heading text-xl">Expressions</span> • UIT</p>
                 </div>
             </footer>
         </div>
