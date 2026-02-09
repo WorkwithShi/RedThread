@@ -43,7 +43,7 @@ const Confess = () => {
     const [activeTab, setActiveTab] = useState<'inbox' | 'write'>('inbox');
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
-    const [senderName, setSenderName] = useState('Anonymous');
+    const [senderName, setSenderName] = useState('');
     const [senderGender, setSenderGender] = useState('Secret');
     const [targetName, setTargetName] = useState('');
     const [recipientName, setRecipientName] = useState('');
@@ -139,7 +139,7 @@ const Confess = () => {
         setLoading(true);
         const { error } = await supabase.from('confessions').insert([{
             content: newMessage,
-            sender_name: senderName,
+            sender_name: senderName || 'Anonymous',
             sender_gender: senderGender,
             recipient_id: targetRecipientId
         }]);
@@ -157,7 +157,7 @@ const Confess = () => {
 
     const handleGenerateShareableCard = (e: React.FormEvent) => {
         e.preventDefault();
-        const payload = { id: Date.now().toString(), content: newMessage, senderName, senderGender, targetName };
+        const payload = { id: Date.now().toString(), content: newMessage, senderName: senderName || 'Anonymous', senderGender, targetName };
         const encoded = utf8tob64(JSON.stringify(payload));
         setGeneratedLink(`${window.location.origin}${window.location.pathname}?secret=${encoded}`);
     };
@@ -278,7 +278,7 @@ const Confess = () => {
                                             </button>
                                         </div>
                                         <div className="mb-2 flex items-center gap-2">
-                                            <div className={`p-1.5 rounded-full ${msg.sender_gender === 'Male' ? 'bg-blue-100 text-blue-600' : msg.sender_gender === 'Female' ? 'bg-pink-100 text-pink-600' : 'bg-gray-100 text-gray-600'}`}>
+                                            <div className={`p-1.5 rounded-full ${msg.sender_gender === 'Male' ? 'bg-blue-100 text-blue-600' : msg.sender_gender === 'Female' ? 'bg-pink-100 text-pink-600' : msg.sender_gender === 'Others' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-600'}`}>
                                                 <Heart size={10} fill="currentColor" />
                                             </div>
                                             <span className="text-xs font-bold text-[var(--color-red)]">From: {msg.sender_name}</span>
@@ -316,7 +316,7 @@ const Confess = () => {
                                 </h3>
                                 <p className="text-2xl font-serif italic text-gray-800 leading-relaxed px-4">"{newMessage}"</p>
                                 <div className="mt-8 pt-8 border-t border-[var(--color-pink)] w-full text-center">
-                                    <p className="text-sm font-bold opacity-60 uppercase tracking-widest">From: {senderName}</p>
+                                    <p className="text-sm font-bold opacity-60 uppercase tracking-widest">From: {senderName || 'Anonymous'}</p>
                                     <p className="text-xs mt-4 font-heading text-[var(--color-red)] opacity-80">{saying}</p>
                                     <p className="text-[10px] mt-4 opacity-30">Scan or visit: redthread.love</p>
                                 </div>
@@ -364,7 +364,7 @@ const Confess = () => {
                             <div className="grid grid-cols-2 gap-4">
                                 <input type="text" value={senderName} onChange={e => setSenderName(e.target.value)} placeholder="From (Optional)" className="p-3 rounded-lg border border-[var(--color-pink)] bg-white/50 text-center" />
                                 <select value={senderGender} onChange={e => setSenderGender(e.target.value)} className="p-3 rounded-lg border border-[var(--color-pink)] bg-white/50">
-                                    <option>Secret</option><option>Male</option><option>Female</option>
+                                    <option>Secret</option><option>Male</option><option>Female</option><option>Others</option>
                                 </select>
                             </div>
                             <Button type="submit" size="lg" className="w-full btn-big-burst" disabled={loading}>
@@ -474,6 +474,7 @@ const Confess = () => {
                                         <option value="Secret">Keep it Secret 🎭</option>
                                         <option value="Female">Damsel (Woman) 🌸</option>
                                         <option value="Male">Gentleman (Man) 👔</option>
+                                        <option value="Others">Something Else ✨</option>
                                     </select>
                                 </div>
                             </div>

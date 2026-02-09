@@ -1,4 +1,4 @@
-import { Heart, Instagram, Linkedin, Quote, Users, Sparkles } from 'lucide-react';
+import { Heart, Instagram, Linkedin, Quote, Users } from 'lucide-react';
 import '../styles/animations.css';
 
 const About = () => {
@@ -6,7 +6,7 @@ const About = () => {
         <div className="min-h-[80vh] py-12 px-4 animate-fade-in max-w-4xl mx-auto">
             <div className="text-center mb-16 relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-[var(--color-pink)]/10 rounded-full blur-3xl -z-10" />
-                <h1 className="text-6xl font-heading text-[var(--color-red)] mb-4 drop-shadow-sm">Expressions</h1>
+                <h1 className="text-4xl md:text-6xl font-heading text-[var(--color-red)] mb-4 drop-shadow-sm">Expressions</h1>
                 <p className="text-lg tracking-[0.2em] uppercase opacity-60 font-medium">The Literary Club of UIT</p>
                 <div className="mt-6 flex justify-center gap-2">
                     <div className="w-12 h-[2px] bg-gradient-to-r from-transparent to-[var(--color-red)]/40 rounded-full" />
@@ -23,8 +23,8 @@ const About = () => {
                     </div>
 
                     <div className="relative z-10">
-                        <h2 className="text-3xl font-heading text-[var(--color-red)] mb-6 flex items-center gap-3">
-                            <Sparkles className="text-[var(--color-pink)]" /> Woven in Words
+                        <h2 className="text-2xl md:text-3xl font-heading text-[var(--color-red)] mb-6 flex items-center gap-3">
+                            <Heart className="text-[var(--color-pink)]" /> Woven in Words
                         </h2>
                         <p className="text-xl font-serif italic text-gray-700 leading-relaxed mb-8">
                             "Expressions is not just a club; it's the creative heartbeat of UIT. We believe that every soul has a story, and every story deserves a thread to bind it to the world."
@@ -64,7 +64,7 @@ const About = () => {
 
                     <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[2rem] border border-[var(--color-pink)]/20 hover:bg-white/60 transition-all">
                         <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 mb-6 shadow-sm">
-                            <Sparkles size={24} />
+                            <Heart size={24} />
                         </div>
                         <h3 className="text-xl font-bold mb-3 text-[var(--color-text)]">Our Events</h3>
                         <p className="text-sm opacity-70 leading-relaxed">

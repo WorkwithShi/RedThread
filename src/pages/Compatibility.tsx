@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '../components/Button';
-import { Sparkles, Heart, Download, Loader2 } from 'lucide-react';
+import { Heart, Download, Loader2 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import '../styles/animations.css';
@@ -111,7 +111,7 @@ const Compatibility = () => {
             </div>
 
             <div className="text-center mb-6">
-                <h1 className="text-5xl font-heading text-[var(--color-red)] mb-2">Destiny Match</h1>
+                <h1 className="text-4xl md:text-5xl font-heading text-[var(--color-red)] mb-2">Destiny Match</h1>
                 <p className="text-[var(--color-text)] opacity-70">
                     Calculated by the stars, woven by the red thread.
                 </p>
@@ -150,7 +150,7 @@ const Compatibility = () => {
                     </div>
 
                     <Button type="submit" size="lg" className="w-full" disabled={loading}>
-                        {loading ? <Loader2 className="animate-spin" /> : "Calculate Love"} <Sparkles size={18} />
+                        {loading ? <Loader2 className="animate-spin" /> : "Calculate Love"}
                     </Button>
                 </form>
             </div>
@@ -232,7 +232,7 @@ const Compatibility = () => {
                             {downloading ? <Loader2 className="animate-spin" /> : "Download Scroll"} <Download size={18} />
                         </Button>
                         <Button onClick={() => downloadCertificate(storyRef, true)} variant="primary" className="flex-1 flex items-center justify-center gap-2 btn-glow" disabled={downloading}>
-                            {downloading ? <Loader2 className="animate-spin" /> : "Instagram Story"} <Sparkles size={18} />
+                            {downloading ? <Loader2 className="animate-spin" /> : "Instagram Story"}
                         </Button>
                     </div>
                 </div>

@@ -29,6 +29,23 @@ const AudioPlayer: React.FC = () => {
             el.addEventListener('canplay', handleCanPlay);
             el.addEventListener('error', handleError);
 
+            // Attempt to auto-play on mount
+            const attemptAutoPlay = async () => {
+                try {
+                    await el.play();
+                    setIsPlaying(true);
+                } catch (err) {
+                    console.log("Auto-play blocked by browser, waiting for user interaction");
+                    // Add one-time click listener to start music
+                    const startOnClick = () => {
+                        el.play().then(() => setIsPlaying(true)).catch(() => { });
+                        document.removeEventListener('click', startOnClick);
+                    };
+                    document.addEventListener('click', startOnClick, { once: true });
+                }
+            };
+            attemptAutoPlay();
+
             return () => {
                 el.removeEventListener('loadstart', handleLoadStart);
                 el.removeEventListener('canplay', handleCanPlay);
