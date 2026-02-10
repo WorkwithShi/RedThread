@@ -45,7 +45,7 @@ const Home = () => {
                     </div>
 
                     <div className="bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-md border border-[var(--color-red-light)] hover:shadow-lg transition-all cursor-pointer group" onClick={() => navigate('/confessions')}>
-                        <MessageCircle className="w-10 h-10 text-[var(--color-pink)] mb-2 mx-auto group-hover:scale-110 transition-transform" />
+                        <MessageCircle className="w-10 h-10 text-[var(--color-red)] mb-2 mx-auto group-hover:scale-110 transition-transform" />
                         <h3 className="text-sm font-semibold">Secrets</h3>
                     </div>
 

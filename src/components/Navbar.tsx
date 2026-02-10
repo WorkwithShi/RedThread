@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Heart, MessageCircle, Gift, Info, BookHeart, Sparkles } from 'lucide-react';
+import { Home, Heart, MessageCircle, Gift, Info, BookHeart, Sparkles, X } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
 import Modal from './Modal';
 import { playPopSound } from '../utils/audioEffects';
@@ -21,11 +21,11 @@ const Navbar = () => {
                 <div className="flex items-center gap-2 md:hidden">
                     <AudioPlayer />
                     <button
-                        onClick={() => setIsGuideOpen(true)}
-                        className="p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all"
-                        aria-label="App Guide"
+                        onClick={() => setIsGuideOpen(!isGuideOpen)}
+                        className={`p-2 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] transition-all z-[60] relative ${isGuideOpen ? 'bg-[var(--color-red)] text-white hover:bg-[var(--color-red)]/90' : 'bg-white/50 hover:bg-white'}`}
+                        aria-label={isGuideOpen ? "Close Guide" : "App Guide"}
                     >
-                        <Info size={20} />
+                        {isGuideOpen ? <X size={20} /> : <Info size={20} />}
                     </button>
                 </div>
 
@@ -58,11 +58,11 @@ const Navbar = () => {
 
                     <div className="flex items-center gap-4 ml-4">
                         <button
-                            onClick={() => setIsGuideOpen(true)}
-                            className="p-2 bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] hover:bg-white transition-all"
-                            aria-label="App Guide"
+                            onClick={() => setIsGuideOpen(!isGuideOpen)}
+                            className={`p-2 backdrop-blur-sm rounded-full shadow-sm border border-[var(--color-pink)]/20 text-[var(--color-red)] transition-all z-[60] relative ${isGuideOpen ? 'bg-[var(--color-red)] text-white hover:bg-[var(--color-red)]/90' : 'bg-white/50 hover:bg-white'}`}
+                            aria-label={isGuideOpen ? "Close Guide" : "App Guide"}
                         >
-                            <Info size={20} />
+                            {isGuideOpen ? <X size={20} /> : <Info size={20} />}
                         </button>
                         <AudioPlayer />
                     </div>

@@ -30,7 +30,7 @@ const Layout = () => {
 
             <Navbar />
 
-            <main className="container flex-grow relative z-10 animate-fade-in">
+            <main className="container mx-auto flex-grow relative z-10 animate-fade-in">
                 <Outlet />
             </main>
 

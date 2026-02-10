@@ -24,17 +24,46 @@ const AudioPlayer: React.FC = () => {
             globalAudio.volume = 0.4;
             globalAudio.preload = 'auto';
 
-            const handleLoadStart = () => setIsLoading(true);
-            const handleCanPlay = () => setIsLoading(false);
-            const handleError = () => {
+            const handleLoadStart = () => {
+                setIsLoading(true);
+                setHasError(false);
+            };
+
+            const handleCanPlay = () => {
+                setIsLoading(false);
+                setHasError(false);
+            };
+
+            const handleError = (e: Event) => {
+                console.error("Audio error:", e);
                 setIsLoading(false);
                 setHasError(true);
-                console.error("Audio failed to load.");
+                // Auto-retry after 5 seconds if error occurs
+                setTimeout(() => {
+                    if (globalAudio) {
+                        globalAudio.load();
+                        globalAudio.play().then(() => {
+                            globalListeners.forEach(listener => listener(true));
+                        }).catch(() => { });
+                    }
+                }, 5000);
+            };
+
+            const handleStalled = () => {
+                console.warn("Audio stalled");
+                // Try to nudge it
+                if (globalAudio && !globalAudio.paused) {
+                    globalAudio.load();
+                    globalAudio.play().catch(() => { });
+                }
             };
 
             globalAudio.addEventListener('loadstart', handleLoadStart);
             globalAudio.addEventListener('canplay', handleCanPlay);
             globalAudio.addEventListener('error', handleError);
+            globalAudio.addEventListener('stalled', handleStalled);
+            globalAudio.addEventListener('waiting', () => setIsLoading(true));
+            globalAudio.addEventListener('playing', () => setIsLoading(false));
 
             // Attempt to auto-play on mount
             const attemptAutoPlay = async () => {
@@ -57,6 +86,13 @@ const AudioPlayer: React.FC = () => {
         } else {
             // Sync state with existing audio
             setIsPlaying(!globalAudio.paused);
+
+            // Re-attach listeners just in case context was lost (though globalAudio persists)
+            // Ideally we don't need to re-attach if the instance is truly global and persistent 
+            // across React renders, but good to ensure state is consistent.
+            if (globalAudio.error) {
+                setHasError(true);
+            }
         }
 
         return () => {
@@ -72,10 +108,16 @@ const AudioPlayer: React.FC = () => {
                 globalListeners.forEach(listener => listener(false));
             } else {
                 setHasError(false);
+                setIsLoading(true);
                 globalAudio.play()
-                    .then(() => globalListeners.forEach(listener => listener(true)))
+                    .then(() => {
+                        setIsLoading(false);
+                        globalListeners.forEach(listener => listener(true));
+                    })
                     .catch((err) => {
-                        console.warn("Audio play blocked", err);
+                        console.warn("Audio play blocked/failed", err);
+                        setIsLoading(false);
+                        setHasError(true);
                         globalListeners.forEach(listener => listener(false));
                     });
             }
