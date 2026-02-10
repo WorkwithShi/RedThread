@@ -265,7 +265,7 @@ const Confess = () => {
                         {loading ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[var(--color-red)]" size={48} /></div> : (
                             <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2">
                                 {messages.length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center py-20 opacity-50">
+                                    <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-20 opacity-50">
                                         <MessageCircle className={`mb-4 ${myUserGender === 'Female' ? 'text-pink-400' : myUserGender === 'Male' ? 'text-blue-400' : 'text-[var(--color-pink)]'}`} size={48} />
                                         <p className="opacity-60 text-lg">Your inbox is quiet...</p>
                                         <p className="text-xs italic mt-2">"True words are often whispered in silence."</p>
@@ -291,7 +291,7 @@ const Confess = () => {
                         )}
                     </div>
                 ) : (
-                    <div className="w-full max-w-lg text-center py-16 bg-white/50 rounded-[var(--radius-xl)] border-2 border-dashed border-[var(--color-pink)] p-8">
+                    <div className="w-full max-w-lg mx-auto text-center py-16 bg-white/50 rounded-[var(--radius-xl)] border-2 border-dashed border-[var(--color-pink)] p-8">
                         <MessageCircle className="mx-auto mb-4 text-[var(--color-pink)] opacity-40" size={48} />
                         <h3 className="text-2xl font-bold mb-4">Claim Your Box</h3>
                         <p className="opacity-70 mb-8">Create an inbox to receive secrets from your friends, and choose your theme!</p>

@@ -4,6 +4,10 @@ import '../styles/animations.css';
 const About = () => {
     const events = [
         { title: "UIT's Castle", image: "/assets/events/uits_castle.jpg.jpeg" },
+        { title: "Sukoon", image: "/assets/events/sukoon.jpg.jpeg" }, // Verified: sukoon.jpg.jpeg
+        { title: "Visionary", image: "/assets/events/visionary.jpg.png" }, // Verified: visionary.jpg.png
+        { title: "Educate Us", image: "/assets/events/educateus.jpg.png" }, // Verified: educateus.jpg.png
+        { title: "Renaissance", image: "/assets/events/renaissance.jpg.jpeg" }, // Verified: renaissance.jpg.jpeg
         { title: "Recruitment", image: "/assets/events/expressions_newspaper.jpg.png" },
         { title: "Orientation", image: "/assets/events/orientation.jpg.png" },
         { title: "Chase or Escape", image: "/assets/events/chase_or_escape.jpg.png" },
