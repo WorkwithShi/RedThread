@@ -6,6 +6,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { AlertCircle, MessageCircle, Copy, Check, Loader2, Download, Heart, Trash2, Gift, ExternalLink } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
+import { QRCodeCanvas } from 'qrcode.react'; // Added import
 import '../styles/animations.css';
 
 interface Message {
@@ -435,13 +436,55 @@ const Confess = () => {
                     {myInboxId ? (
                         <div className="text-center space-y-4">
                             <p className="text-sm opacity-70">You already have a box claimed as <span className="font-bold text-[var(--color-red)]">{b64toutf8(myInboxId)}</span>.</p>
-                            <div className="bg-white/80 p-4 rounded-xl border border-[var(--color-pink)] text-xs font-mono break-all shadow-inner">
+
+                            {/* QR Code Section */}
+                            <div className="flex flex-col items-center gap-4 bg-[var(--color-cream)] p-6 rounded-2xl border-2 border-[var(--color-red)] shadow-inner relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-2 opacity-10"><Heart size={40} fill="currentColor" className="text-[var(--color-red)]" /></div>
+                                <div className="absolute bottom-0 left-0 p-2 opacity-10"><Heart size={40} fill="currentColor" className="text-[var(--color-red)]" /></div>
+
+                                <div id="qr-code-container" className="bg-white p-3 rounded-xl shadow-md transform group-hover:scale-105 transition-transform">
+                                    <QRCodeCanvas
+                                        value={`${window.location.origin}/confessions?to=${myInboxId}`}
+                                        size={180}
+                                        bgColor={"#ffffff"}
+                                        fgColor={"#D32F2F"}
+                                        level={"H"}
+                                        includeMargin={true}
+                                        imageSettings={{
+                                            src: "/logo.png", // Fallback if no logo, but options exist
+                                            x: undefined,
+                                            y: undefined,
+                                            height: 24,
+                                            width: 24,
+                                            excavate: true,
+                                        }}
+                                    />
+                                </div>
+                                <p className="text-[10px] font-heading text-[var(--color-red)] opacity-80 tracking-widest">Scan to Whisper</p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <Button onClick={() => {
+                                    const canvas = document.querySelector('#qr-code-container canvas') as HTMLCanvasElement;
+                                    if (canvas) {
+                                        const url = canvas.toDataURL("image/png");
+                                        download(url, `red-thread-qr-${b64toutf8(myInboxId)}.png`);
+                                    }
+                                }} size="sm" className="btn-glow">
+                                    <Download size={16} /> Save QR
+                                </Button>
+                                <Button onClick={() => {
+                                    navigator.clipboard.writeText(`${window.location.origin}/confessions?to=${myInboxId}`);
+                                    alert("Link copied!");
+                                }} size="sm" variant="outline">
+                                    <Copy size={16} /> Copy Link
+                                </Button>
+                            </div>
+
+                            <div className="bg-white/80 p-3 rounded-xl border border-[var(--color-pink)] text-[10px] font-mono break-all shadow-inner opacity-60">
                                 {window.location.origin}/confessions?to={myInboxId}
                             </div>
-                            <Button onClick={() => {
-                                navigator.clipboard.writeText(`${window.location.origin}/confessions?to=${myInboxId}`);
-                                alert("Link copied!");
-                            }} className="w-full">Copy Link</Button>
+
                             <button
                                 onClick={() => { localStorage.removeItem('red_thread_recipient_id'); window.location.reload(); }}
                                 className="text-[10px] opacity-40 hover:opacity-100 uppercase tracking-widest mt-4"
