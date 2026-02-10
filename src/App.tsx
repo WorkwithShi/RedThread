@@ -8,6 +8,7 @@ import DirectConfession from './pages/DirectConfession';
 import Compatibility from './pages/Compatibility';
 import Policy from './pages/Policy';
 import About from './pages/About';
+import Promotions from './pages/Promotions';
 import RedThread from './components/RedThread';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="compatibility" element={<Compatibility />} />
           <Route path="policy" element={<Policy />} />
           <Route path="about" element={<About />} />
+          <Route path="promotions" element={<Promotions />} />
         </Route>
       </Routes>
     </Router>

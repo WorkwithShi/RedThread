@@ -68,6 +68,8 @@ const Layout = () => {
                     <div className="flex gap-6 text-xs uppercase tracking-tighter opacity-50 font-bold">
                         <a href="/policy" className="hover:text-[var(--color-red)] transition-colors">Privacy & Politeness</a>
                         <span className="opacity-20">|</span>
+                        <a href="/promotions" className="hover:text-[var(--color-red)] transition-colors">Promote</a>
+                        <span className="opacity-20">|</span>
                         <span className="italic">Bound by Fate, Woven in Words</span>
                     </div>
 
