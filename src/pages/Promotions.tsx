@@ -11,6 +11,7 @@ const Promotions = () => {
     const storyRef = useRef<HTMLDivElement>(null);
     const guideRef = useRef<HTMLDivElement>(null);
     const qrFrameRef = useRef<HTMLDivElement>(null);
+    const projectQrRef = useRef<HTMLDivElement>(null);
 
     const [myInboxId] = useState<string | null>(localStorage.getItem('red_thread_recipient_id'));
 
@@ -171,6 +172,51 @@ const Promotions = () => {
                                     <Heart fill="currentColor" size={20} />
                                     <Heart fill="currentColor" size={20} />
                                     <Heart fill="currentColor" size={20} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 5. Project Link QR */}
+                <div className="flex flex-col gap-4">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-bold flex items-center gap-2"><Share2 size={20} /> Red Thread QR</h2>
+                        <Button size="sm" onClick={() => handleDownload(projectQrRef, 'red-thread-qr')}>Download</Button>
+                    </div>
+                    <div className="bg-gray-100 p-4 rounded-xl overflow-hidden flex justify-center">
+                        <div ref={projectQrRef} className="w-[350px] h-[500px] bg-[var(--color-cream)] relative flex flex-col items-center justify-center p-2 rounded-2xl border-4 border-[var(--color-pink)]">
+                            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-multiply" />
+
+                            <div className="bg-white w-full h-full rounded-lg flex flex-col items-center p-8 text-center relative overflow-hidden shadow-inner">
+                                <h3 className="text-3xl font-heading text-[var(--color-red)] mb-2 mt-8">Red Thread</h3>
+                                <p className="text-sm italic opacity-60 mb-8">Send anonymous whispers</p>
+
+                                <div className="p-4 bg-[var(--color-cream)] rounded-xl border-2 border-dashed border-[var(--color-red)] mb-6 relative z-10 transform rotate-2 hover:rotate-0 transition-transform">
+                                    <QRCodeCanvas
+                                        value="https://redthread.vercel.app/confessions"
+                                        size={160}
+                                        bgColor={"#FFFBF0"}
+                                        fgColor={"#D32F2F"}
+                                        level={"H"}
+                                        includeMargin={true}
+                                        imageSettings={{
+                                            src: "/logo.png",
+                                            x: undefined,
+                                            y: undefined,
+                                            height: 24,
+                                            width: 24,
+                                            excavate: true,
+                                        }}
+                                    />
+                                </div>
+
+                                <p className="text-[10px] font-bold tracking-widest text-[var(--color-red)] opacity-40 uppercase">
+                                    redthread.vercel.app
+                                </p>
+
+                                <div className="absolute bottom-4 right-4 text-[var(--color-pink)] opacity-50">
+                                    <Heart fill="currentColor" size={24} />
                                 </div>
                             </div>
                         </div>
